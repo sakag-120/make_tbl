@@ -1,41 +1,33 @@
 #==================================================
 #　　　　　　　　　mak_teigi.py
-#仕様書エクセルファイルから仕様項目とデータ定義
+#項目整理ファイルから仕様項目とデータ定義
 #を抽出するプログラム
-#　　　　坂口　裕宜　2019.7.28 最終更新
+#　　　　坂口　裕宜　2019.11.24 最終更新
 # 仕様項目の不一致バグ除け
 #==================================================
 import sys,os,openpyxl,csv
 
-wb = openpyxl.load_workbook("C:\\elephants\\elephants_test\\仕様書\\仕様書分解.xlsm", data_only=True)
+wb = openpyxl.load_workbook("C:\\elephants\\elephants_test\\elephants_test\\Master\\仕様項目整理.xlsx", data_only=True)
 
-#仕様項目を読み出すシートは助けるゾウメインプログラムと同様にする。
-shiyou_sheet      = wb.get_sheet_by_name('仕様指示書－作成－')
-
-#読みだすシートは選択式仕様書を分解したもの
-koumoku_sheet = wb.get_sheet_by_name('リスト－仕様指示書－')
+#読み出すシート
+koumoku_sheet = wb['まとめ']
 
 koumoku = ""
 dic_teigi = dict()
 dic_koumoku = dict()
 
-#辞書型変数に
-for row in range(4, 100):
-    koumoku = str(shiyou_sheet['D' + str(row)].value).replace('\n','')
-    koumoku_num = koumoku[0:koumoku.find('．')]
-    dic_koumoku[koumoku_num] = koumoku
-
 #辞書型変数に、指定した行から、仕様項目と仕様内容の文字数を代入する。
 #文字数は最大値のみを代入していく。
 
-for row in range(4,503):
+for row in range(5,593):
     if  str(koumoku_sheet['C' + str(row)].value).replace('\n','') != "None":
         koumoku = str(koumoku_sheet['C' + str(row)].value).replace('\n','')
-        koumoku_num = koumoku[0:koumoku.find('．')]
-        koumoku = dic_koumoku[koumoku_num]
         dic_teigi[koumoku] = "1"
-    if int(dic_teigi[koumoku]) < len(str(koumoku_sheet['D' + str(row)].value).replace('\n','')):
-        dic_teigi[koumoku] = str(len(str(koumoku_sheet['D' + str(row)].value).replace('\n',''))) 
+    if int(dic_teigi[koumoku]) < len(str(koumoku_sheet['H' + str(row)].value).replace('\n','')):
+        dic_teigi[koumoku] = str(len(str(koumoku_sheet['H' + str(row)].value).replace('\n',''))) 
+    if int(dic_teigi[koumoku]) < len(str(koumoku_sheet['M' + str(row)].value).replace('\n','')):
+        dic_teigi[koumoku] = str(len(str(koumoku_sheet['M' + str(row)].value).replace('\n',''))) 
+
 #変数（仕様項目名）とそのデータ定義を指定した場所と名前でcsvファイルに書き込む
 with open("C:\\elephants\\elephants_test\\elephants_test\\Master\\koumoku_teigi.csv", 'w') as f:
     writer = csv.writer(f)

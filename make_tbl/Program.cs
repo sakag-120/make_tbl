@@ -2,7 +2,7 @@
 //　　　　　　　　　Program.cs
 //設計マスタとデータ定義csvデータから、
 //仕様項目／部品構成表を作成するクエリを記述するプログラム
-//　　　　坂口　裕宜　2019.7.1 最終更新
+//　　　　坂口　裕宜　2019.11.27 最終更新
 //  Key項目の導入
 //==============================================//
 
@@ -20,7 +20,7 @@ namespace make_tbl
     {
         static void Main(string[] args)
         {
-            //仕様書読み込みプログラムコードで作成したcsvファイル場所指定         
+            //仕様項目とデータ定義をまとめたcsvファイルの場所指定         
             TextFieldParser parser = new TextFieldParser(@"C:\elephants\elephants_test\elephants_test\Master\koumoku_teigi.csv", Encoding.GetEncoding("Shift_JIS"));
             parser.TextFieldType = FieldType.Delimited;
             parser.SetDelimiters(",");// ","区切り
@@ -31,7 +31,6 @@ namespace make_tbl
             {
                 string[] row = parser.ReadFields();//1行分読み込み
                 data_dic.Add(row[0], row[1]);
-                
             }
 
             TextFieldParser parser2 = new TextFieldParser(@"C:\elephants\elephants_test\elephants_test\Master\PB.csv", Encoding.GetEncoding("Shift_JIS"));
